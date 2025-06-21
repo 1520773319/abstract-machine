@@ -29,6 +29,41 @@ int atoi(const char* nptr) {
   return x;
 }
 
+int itoa(int n, char buffer[], int base) {
+  const char digits[] = "0123456789abcdef";
+  char temp[32];
+  int i = 0;
+  int is_negative = 0;
+
+  if (n == 0) {
+    buffer[0] = '0';
+    buffer[1] = '\0';
+    return 1;
+  }
+
+  if (n < 0 && base == 10) {
+    is_negative = 1;
+    n = -n;
+  }
+
+  while (n > 0) {
+    temp[i++] = digits[n % base];
+    n /= base;
+  }
+
+  if (is_negative) {
+    temp[i++] = '-';
+  }
+
+  int j = 0;
+  while (i > 0) {
+    buffer[j++] = temp[--i];
+  }
+  buffer[j] = '\0';
+
+  return j;
+}
+
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:
